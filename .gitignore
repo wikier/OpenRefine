@@ -4,7 +4,10 @@
 *.class
 .com.apple.timemachine.supported
 .import-temp/
+.idea/
+*.iml
 build/
+target/
 dist/
 server/classes/
 main/webapp/WEB-INF/classes/
