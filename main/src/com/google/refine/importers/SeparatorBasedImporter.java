@@ -50,6 +50,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.lang.StringUtils;
 import org.json.JSONObject;
 
 import au.com.bytecode.opencsv.CSVParser;
@@ -61,6 +62,7 @@ import com.google.refine.model.Project;
 import com.google.refine.util.JSONUtilities;
 
 public class SeparatorBasedImporter extends TabularImportingParserBase {
+
     public SeparatorBasedImporter() {
         super(false);
     }
@@ -90,11 +92,13 @@ public class SeparatorBasedImporter extends TabularImportingParserBase {
         JSONObject options,
         List<Exception> exceptions
     ) {
-        String sep = JSONUtilities.getString(options, "separator", "\\t");
-        if (sep == null || "".equals(sep)) {
-            sep = "\\t";
+        char sep;
+        String separator = JSONUtilities.getString(options, "separator", "\\t");
+        if (StringUtils.isNotBlank(separator)) {
+            sep = separator.charAt(0);
+        } else  {
+            sep = '\t';
         }
-        sep = StringEscapeUtils.unescapeJava(sep);
         boolean processQuotes = JSONUtilities.getBoolean(options, "processQuotes", true);
         boolean strictQuotes = JSONUtilities.getBoolean(options, "strictQuotes", false);
         
