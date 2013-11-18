@@ -31,12 +31,10 @@
             <param-name>refine.revision</param-name>
             <param-value>$REVISION</param-value>
         </init-param>
-        <!-- added by Wikier, unused by us
         <init-param>
             <param-name>refine.data</param-name>
             <param-value>/tmp/refine</param-value>
-        </init-param>  
-        -->
+        </init-param>
     </servlet>
 
     <servlet-mapping>
