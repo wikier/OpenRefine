@@ -1,0 +1,11 @@
+--- target/openrefine/WEB-INF/butterfly.properties	2013-11-17 20:48:22.685262867 +0100
++++ patches/butterfly.properties	2013-11-18 12:14:05.457506159 +0100
+@@ -24,7 +24,7 @@
+ # ---------- Module ------
+ 
+ butterfly.modules.path = modules
+-butterfly.modules.path = ../../extensions
++butterfly.modules.path = extensions
+     # Add more paths here if your extensions live elsewhere.
+     # Relative paths are relative to refine/main/webapp/
+ 
