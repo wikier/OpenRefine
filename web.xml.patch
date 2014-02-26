@@ -1,0 +1,13 @@
+diff --git a/main/webapp/WEB-INF/web.xml b/main/webapp/WEB-INF/web.xml
+index 979dc0e..47edad9 100644
+--- a/main/webapp/WEB-INF/web.xml
++++ b/main/webapp/WEB-INF/web.xml
+@@ -33,7 +33,7 @@
+         </init-param>
+         <init-param>
+             <param-name>refine.data</param-name>
+-            <param-value>/tmp/refine</param-value>
++            <param-value>/data/instances/refine</param-value>
+         </init-param>
+     </servlet>
+ 

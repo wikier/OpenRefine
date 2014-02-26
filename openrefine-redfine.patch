@@ -1,0 +1,71 @@
+diff --git a/extensions/build.xml b/extensions/build.xml
+index 1632fab..c09c727 100644
+--- a/extensions/build.xml
++++ b/extensions/build.xml
+@@ -14,6 +14,8 @@
+     <ant dir="freebase/" target="build" />
+     <ant dir="gdata/" target="build" />
+     <ant dir="pc-axis/" target="build" />
++    <ant dir="rdf/" target="build" />
++    <ant dir="redfine/" target="build" />
+   </target>
+ 
+   <target name="clean">
+@@ -23,5 +25,7 @@
+     <ant dir="freebase/" target="clean" />
+     <ant dir="gdata/" target="clean" />
+     <ant dir="pc-axis/" target="clean" />
++    <ant dir="rdf/" target="clean" />
++    <ant dir="redfine/" target="clean" />
+   </target>
+ </project>
+diff --git a/main/src/log4j.properties b/main/src/log4j.properties
+index 1b36791..396d5ff 100644
+--- a/main/src/log4j.properties
++++ b/main/src/log4j.properties
+@@ -3,6 +3,7 @@ log4j.logger.org.apache.http.headers=WARN
+ log4j.logger.org.apache.http.impl=WARN
+ log4j.logger.org.apache.http.client=WARN
+ log4j.logger.velocity=WARN
++log4j.logger.io.redlink.redfine=DEBUG
+ 
+ log4j.appender.console=org.apache.log4j.ConsoleAppender
+ log4j.appender.console.layout=com.google.refine.logging.IndentingLayout
+diff --git a/main/webapp/modules/core/index.vt b/main/webapp/modules/core/index.vt
+index 2b9d537..f6eee73 100644
+--- a/main/webapp/modules/core/index.vt
++++ b/main/webapp/modules/core/index.vt
+@@ -35,16 +35,17 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ <head>
+   <meta charset="utf-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=8;IE=9;chrome=1;">
+-  <title>OpenRefine</title>
+-  <link rel="icon" type="image/png" href="images/favicon.png">
++  <title>Redfine</title>
++  <link rel="icon" type="image/png" href="extension/redfine/images/favicon.png">
+   <script type="text/javascript" src="wirings.js"></script>
+   $scriptInjection
+   $styleInjection
+   <script>Refine.encodings = $encodingJson; Refine.defaultEncoding = $defaultEncoding;</script>
++  <link type="text/css" rel="stylesheet" href="extension/redfine/styles/redfine.css" />
+ </head>
+ <body>
+   <div id="header">
+-    <img alt="OpenRefine" src="images/logo-openrefine-30.png" width="129" height="29" />
++    <img alt="Redfine" src="extension/redfine/images/redfine.png" width="129" height="29" />
+     <span id="slogan"></span>
+   </div>
+   
+diff --git a/pom.xml b/pom.xml
+index 00c51da..fb561e9 100644
+--- a/pom.xml
++++ b/pom.xml
+@@ -22,7 +22,7 @@
+     </scm>
+ 
+     <build>
+-        <finalName>openrefine</finalName>
++        <finalName>redfine</finalName>
+         <resources>
+             <resource>
+                 <directory>main/src</directory>
