@@ -182,10 +182,11 @@ class RefineServer extends Server {
         }
 
         final String contextPath = Configurations.get("refine.context_path","/");
+        final int maxFormContentSize = Configurations.getInteger("refine.max_form_content_size", 1048576);
         
         logger.info("Initializing context: '" + contextPath + "' from '" + webapp.getAbsolutePath() + "'");
         WebAppContext context = new WebAppContext(webapp.getAbsolutePath(), contextPath);
-        context.setMaxFormContentSize(1048576);
+        context.setMaxFormContentSize(maxFormContentSize);
 
         this.setHandler(context);
         this.setStopAtShutdown(true);
@@ -461,44 +462,12 @@ class RefineClient extends JFrame implements ActionListener {
 
     final static Logger logger = LoggerFactory.getLogger("refine-client");
 
-    public static boolean MACOSX = (System.getProperty("os.name").toLowerCase().startsWith("mac os x"));
-    
     private URI uri;
     
     public void init(String host, int port) throws Exception {
 
         uri = new URI("http://" + host + ":" + port + "/");
 
-        if (MACOSX) {
-
-            // for more info on the code found here that is macosx-specific see:
-            //  http://developer.apple.com/mac/library/documentation/Java/Conceptual/Java14Development/07-NativePlatformIntegration/NativePlatformIntegration.html
-            //  http://developer.apple.com/mac/library/releasenotes/CrossPlatform/JavaSnowLeopardUpdate1LeopardUpdate6RN/NewandNoteworthy/NewandNoteworthy.html
-
-            JMenuBar mb = new JMenuBar(); 
-            JMenu m = new JMenu("Open");
-            JMenuItem mi = new JMenuItem("Open New Refine Window...");
-            mi.addActionListener(this);
-            m.add(mi);
-            mb.add(m);
-
-            Class<?> applicationClass = Class.forName("com.apple.eawt.Application"); 
-            Object macOSXApplication = applicationClass.getConstructor((Class[]) null).newInstance((Object[]) null);
-            Method setDefaultMenuBar = applicationClass.getDeclaredMethod("setDefaultMenuBar", new Class[] { JMenuBar.class });
-            setDefaultMenuBar.invoke(macOSXApplication, new Object[] { mb });
-           
-            // FIXME(SM): this part below doesn't seem to work, I get a NPE but I have *no* idea why, suggestions?
-            
-//            PopupMenu dockMenu = new PopupMenu("dock");
-//            MenuItem mmi = new MenuItem("Open new Refine Window...");
-//            mmi.addActionListener(this);
-//            dockMenu.add(mmi);
-//            this.add(dockMenu);
-//
-//            Method setDockMenu = applicationClass.getDeclaredMethod("setDockMenu", new Class[] { PopupMenu.class });
-//            setDockMenu.invoke(macOSXApplication, new Object[] { dockMenu });
-        }
-        
         openBrowser();
     }
     
