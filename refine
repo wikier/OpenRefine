@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 ########################################################## 
 #               OpenRefine Control System             #
@@ -15,12 +15,12 @@ exit 1
 }
 
 error() {
-    echo "$1"
+    echo "Error: $1"
     exit 1
 }
 
 warn() {
-    echo "$1"
+    echo "Warning: $1"
     exit 0
 }
 
@@ -532,14 +532,14 @@ mac_dist() {
     mkdir -p "$REFINE_BUILD_DIR/mac/.background"
     cp graphics/dmg_background/dmg_background.png "$REFINE_BUILD_DIR/mac/.background/dmg_background.png"
     
-    SIZE=200
+    SIZE=250
     
     if [ -f "$REFINE_BUILD_DIR/temp_refine.dmg" ] ; then
         rm "$REFINE_BUILD_DIR/temp_refine.dmg"
     fi
 
 # Sign the bundle with a self-signed cert so OS X doesn't frustrate users by making app invisible
-    codesign -s "OpenRefine Code Signing" "$REFINE_BUILD_DIR/mac/OpenRefine.app"
+    codesign --deep -s "OpenRefine Code Signing" "$REFINE_BUILD_DIR/mac/OpenRefine.app"
     spctl --assess --type execute --verbose=4 "$REFINE_BUILD_DIR/mac/OpenRefine.app"
 
     TITLE="OpenRefine $VERSION"
@@ -633,8 +633,6 @@ ui_test() {
 
 server_test() {
     ant server_test
-    
-    $RUN_CMD || error "Failed passing server tests"
 }
 
 run() {
@@ -872,7 +870,7 @@ if [ ! -x "$JAVA" ] ; then
     error "Could not find the 'java' executable at '$JAVA', are you sure your JAVA_HOME environment variable is pointing to a proper java installation?"
 fi
 
-JAVA_VERSION=`$JAVA -version 2>&1 | grep version | cut -d ' ' -f 3 | egrep '^\"1\.(6|7|8)'`
+JAVA_VERSION=`$JAVA -version 2>&1 | grep version | cut -d ' ' -f 3 | egrep '^\"1\.(6|7|8|9)'`
 if [ -z "$JAVA_VERSION" ] ; then
     error "OpenRefine requires Java version 6 or later. If you have multiple versions of Java installed, please set the environment variable JAVA_HOME to the correct version."
 fi
@@ -916,6 +914,11 @@ if [ -z "$REFINE_MEMORY" ] ; then
     REFINE_MEMORY="1024M"
 fi
 add_option "-Xms256M -Xmx$REFINE_MEMORY -Drefine.memory=$REFINE_MEMORY"
+
+if [ -z "$REFINE_MAX_FORM_CONTENT_SIZE" ] ; then
+    REFINE_MAX_FORM_CONTENT_SIZE="1048576"
+fi
+add_option "-Drefine.max_form_content_size=$REFINE_MAX_FORM_CONTENT_SIZE"
 
 if [ -z "$REFINE_PORT" ] ; then
     REFINE_PORT="3333"
